@@ -1,6 +1,9 @@
+const BASE_URI = 'https://text.cinwell.com';
+
 require('dotenv').config();
 
 const fastify = require('fastify')();
+const cors = require('cors');
 const md5 = require('md5');
 const COS = require('cos-nodejs-sdk-v5');
 
@@ -16,9 +19,10 @@ function isCURL(req) {
 
 // Body limit: 256KB
 fastify.register(require('fastify-formbody'), { bodyLimit: 1024 * 256 });
+fastify.use(cors());
 
 fastify.get('/', (req, reply) => {
-  let text = `Text hosting service\n\nCommond Line\n  curl -d text='any words' https://text.cinwell.com\n`;
+  let text = `Text hosting service\n\nCommond Line\n  curl -d text='any words' ${BASE_URI}\n`;
 
   if (!isCURL(req)) {
     text =
@@ -30,6 +34,10 @@ fastify.get('/', (req, reply) => {
 });
 
 fastify.post('/', (req, reply) => {
+  if (!req.body) {
+    reply.code(400);
+    reply.send('required text');
+  }
   const { text } = req.body;
   const hash = md5(text).slice(0, 8);
 
@@ -39,20 +47,20 @@ fastify.post('/', (req, reply) => {
       Region: 'ap-guangzhou',
       Key: hash,
       ContentType: 'text/plain;charset=utf-8',
-      CacheControl: 'max-age: 31536000',
+      CacheControl: 'max-age=31536000',
       Body: Buffer.from(text)
     },
     (err, data) => {
       if (err) {
-        reply.code = 400;
+        reply.code(400);
         reply.send(err);
       } else {
-        const url = `https://text.cinwell.com/${hash}`;
+        const url = `${BASE_URI}/${hash}`;
         if (!isCURL(req)) {
           reply.header('content-type', 'text/html');
           reply.send(`Click <a href="${url}">${url}</a>`);
         } else {
-          reply.send(`curl ${url}`);
+          reply.send(`curl ${url}\n`);
         }
       }
     }
