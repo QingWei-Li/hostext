@@ -33,8 +33,6 @@ fastify.post('/', (req, reply) => {
   const { text } = req.body;
   const hash = md5(text).slice(0, 8);
 
-  console.log(String(text).toString());
-
   cos.putObject(
     {
       Bucket: process.env.BUCKET,
