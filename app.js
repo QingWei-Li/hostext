@@ -54,14 +54,18 @@ fastify.post('/', (req, reply) => {
       if (err) {
         reply.code(400);
         reply.send(err);
+      }
+
+      if (req.body.hash) {
+        reply.send(hash);
+      }
+
+      const url = `${BASE_URI}/${hash}`;
+      if (!isCURL(req)) {
+        reply.header('content-type', 'text/html');
+        reply.send(`Click <a href="${url}">${url}</a>`);
       } else {
-        const url = `${BASE_URI}/${hash}`;
-        if (!isCURL(req)) {
-          reply.header('content-type', 'text/html');
-          reply.send(`Click <a href="${url}">${url}</a>`);
-        } else {
-          reply.send(`curl ${url}\n`);
-        }
+        reply.send(`curl ${url}\n`);
       }
     }
   );
