@@ -25,7 +25,7 @@ fastify.post('/', (req, reply) => {
 
   cos.putObject(
     {
-      Bucket: 'hostext-1254175213',
+      Bucket: process.env.BUCKET,
       Region: 'ap-guangzhou',
       Key: hash,
       ContentType: 'text/plain',
@@ -37,16 +37,10 @@ fastify.post('/', (req, reply) => {
         reply.code = 400;
         reply.send(err);
       } else {
-        reply.send(`curl -L https://text.cinwell.com/${hash}\n`);
+        reply.send(`curl https://text.cinwell.com/${hash}\n`);
       }
     }
   );
-});
-
-fastify.get('/:hash', (req, reply) => {
-  const { hash } = req.params;
-  const url = `//${process.env.BUCKET}.file.myqcloud.com/${hash}`;
-  reply.redirect(url);
 });
 
 fastify.listen(4930, '0.0.0.0', err => {
