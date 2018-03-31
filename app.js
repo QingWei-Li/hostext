@@ -13,10 +13,16 @@ const cos = new COS({
 // Body limit: 256KB
 fastify.register(require('fastify-formbody'), { bodyLimit: 1024 * 256 });
 
-fastify.get('/', (request, reply) => {
-  reply.send(
-    `Text hosting service\n\nUsage:\n  curl -d text='any words' https://text.cinwell.com\n`
-  );
+fastify.get('/', (req, reply) => {
+  let text = `Text hosting service\n\nCommond Line\n  curl -d text='any words' https://text.cinwell.com\n`;
+
+  if (!/^curl/.test(req.headers['user-agent'])) {
+    text =
+      `<pre>${text}\nOnline<pre>` +
+      '<form method=post><textarea name=text></textarea><div><input type=submit></div></form>';
+    reply.header('content-type', 'text/html');
+  }
+  reply.send(text);
 });
 
 fastify.post('/', (req, reply) => {
