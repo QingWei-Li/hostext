@@ -45,7 +45,7 @@ fastify.post('/', (req, reply) => {
 
 fastify.get('/:hash', (req, reply) => {
   const { hash } = req.params;
-  const url = `//hostext-1254175213.file.myqcloud.com/${hash}`;
+  const url = `//${process.env.BUCKET}.file.myqcloud.com/${hash}`;
   reply.redirect(url);
 });
 
