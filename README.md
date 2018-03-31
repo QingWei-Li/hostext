@@ -4,6 +4,8 @@
 
 Online: https://text.cinwell.com
 
+![carbon](https://user-images.githubusercontent.com/7565692/38164593-8ffe30f2-3539-11e8-90cf-2ed944e82a3e.png)
+
 ## Quick started
 
 ```sh
