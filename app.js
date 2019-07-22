@@ -1,4 +1,4 @@
-const BASE_URI = 'https://text.cinwell.com';
+const BASE_URI = 'https://text.cinwell.xyz';
 
 require('dotenv').config();
 
