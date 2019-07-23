@@ -9,7 +9,7 @@ Online: https://text.cinwell.xyz
 ## Quick started
 
 ```sh
-curl -d text='any words' https://text.cinwell.com
+curl -d text='any words' https://text.cinwell.xyz
 # ~> https://text.cinwell.xyz/aa906272
 
 curl https://text.cinwell.xyz/aa906272
