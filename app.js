@@ -48,7 +48,7 @@ fastify.post('/', (req, reply) => {
       Key: hash,
       ContentType: 'text/plain;charset=utf-8',
       CacheControl: 'max-age=31536000',
-      Body: Buffer.from(text)
+      Body: Buffer.from(text, 'utf8')
     },
     (err, data) => {
       if (err) {
